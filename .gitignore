@@ -1,3 +1,4 @@
 .venv/
-data/
+data/*
+!data/remake_pairs.csv
 .ipynb_checkpoints/
