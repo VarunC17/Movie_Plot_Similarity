@@ -2,3 +2,4 @@
 data/*
 !data/remake_pairs.csv
 .ipynb_checkpoints/
+__pycache__/

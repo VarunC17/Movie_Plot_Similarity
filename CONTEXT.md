@@ -1,0 +1,9 @@
+Project: movie plot similarity engine (Bollywood vs Hollywood/South Indian remakes).
+Deadline: Nov 24, 2026. Me: beginner, 1-1.5 h/day, Windows, target = data scientist.
+Teach me concepts and syntax before code; say which file each step goes in; give copy-paste steps.
+Data: Kaggle Wikipedia Movie Plots; subset American, Bollywood, Tamil, Telugu, Malayalam, Kannada.
+Cleaned: plots >= 50 words, duplicates removed. Rows: 24076. Saved: data/clean.csv.
+Remake pairs so far: 5 in data/remake_pairs.csv.
+Notebooks: 01_explore_and_clean (done), 02_embed_and_search (next).
+Plan: D3 embeddings, D4 search + more pairs, D5 evaluation, D6 app, D7 deploy + README. Nov 24 = buffer.
+Last blocker: none yet.
