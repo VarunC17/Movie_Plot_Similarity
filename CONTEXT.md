@@ -7,3 +7,4 @@ Remake pairs so far: 5 in data/remake_pairs.csv.
 Notebooks: 01_explore_and_clean (done), 02_embed_and_search (next).
 Plan: D3 embeddings, D4 search + more pairs, D5 evaluation, D6 app, D7 deploy + README. Nov 24 = buffer.
 Last blocker: none yet.
+Day 5: app.py + src/build_app_data.py + app_data/ built; app runs locally (TF-IDF default, embeddings toggle). Next: deploy to Streamlit Community Cloud, README with real numbers, resume bullets.

@@ -1,0 +1,4 @@
+method,pairs,recall@10,recall@50,MRR,median_rank
+embedding,31,0.29,0.419,0.231,84.0
+tfidf_full_plot,31,0.774,0.839,0.587,2.0
+tfidf_first190,31,0.645,0.774,0.462,3.0
