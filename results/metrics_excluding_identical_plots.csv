@@ -1,5 +1,5 @@
 set,method,pairs,recall@10,MRR,median_rank
 all pairs,embedding,31,0.29,0.231,84.0
-all pairs,tfidf,31,0.774,0.587,2.0
+all pairs,tfidf,31,0.774,0.589,2.0
 excluding identical-plot pairs,embedding,31,0.29,0.231,84.0
-excluding identical-plot pairs,tfidf,31,0.774,0.587,2.0
+excluding identical-plot pairs,tfidf,31,0.774,0.589,2.0

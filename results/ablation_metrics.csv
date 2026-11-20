@@ -1,5 +1,5 @@
 method,pairs,recall@10,recall@50,MRR,median_rank
 embedding,31,0.29,0.419,0.231,84.0
-tfidf,31,0.774,0.839,0.587,2.0
+tfidf,31,0.774,0.839,0.589,2.0
 tfidf_no_names,31,0.774,0.806,0.634,1.0
-hybrid,31,0.774,0.839,0.583,2.0
+hybrid,31,0.774,0.839,0.584,2.0

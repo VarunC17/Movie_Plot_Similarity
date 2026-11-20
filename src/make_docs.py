@@ -89,7 +89,7 @@ pretrained sentence embeddings and a classic TF-IDF word-overlap baseline.
 ## Data
 - Source: the Kaggle "Wikipedia Movie Plots" dataset (user jrobischon): plot summaries scraped from English Wikipedia, with an origin label per film.
   The licence of the Kaggle compilation was not verified; the text originates from English Wikipedia (CC BY-SA), credit to Wikipedia contributors.
-- Subset used: American, Bollywood, Tamil, Telugu, Malayalam and Kannada films. Plots under 50 words and duplicate title+year rows were removed.
+- Subset used: American, Bollywood, Tamil, Telugu, Malayalam and Kannada films. Plots under 50 words, duplicate title+year rows, and films whose plot text is identical to another film's (dubbed versions or the same film listed in consecutive years) were removed.
 - Result: {n_films:,} films from {y0} to {y1} ({origin_text}).
 
 ## Method
@@ -132,7 +132,7 @@ The app lets you try both methods. It defaults to TF-IDF because that method per
 ## How to run
 1. Create a virtual environment and install: `pip install pandas numpy scipy scikit-learn matplotlib sentence-transformers streamlit jupyterlab`
 2. Download the Kaggle CSV to `data/wiki_movie_plots_deduped.csv` and run `notebooks/01_explore_and_clean.ipynb` to create `data/clean.csv`.
-3. `python src/embed.py` creates the embeddings.
+3. `python src/embed.py` creates the embeddings, then `python -m src.dedupe_plots` removes identical-plot films from the table and the embeddings.
 4. `python -m src.evaluate`, `python -m src.ablation`, `python -m src.truncation_test` create the files in `results/`.
 5. `python -m src.build_app_data` then `streamlit run app.py` runs the app locally.
 
@@ -143,7 +143,7 @@ The app lets you try both methods. It defaults to TF-IDF because that method per
     methodology = f"""# Methodology
 
 ## Data preparation
-Started from {34886:,} rows in the Kaggle file. Kept six origins, dropped plots with fewer than 50 words and duplicate title+year rows,
+Started from {34886:,} rows in the Kaggle file. Kept six origins, dropped plots with fewer than 50 words, duplicate title+year rows and films with identical plot text (dubbed versions, the same film listed twice),
 leaving {n_films:,} films. Row order is preserved so row i of the table matches row i of the embedding matrix.
 
 ## Representations

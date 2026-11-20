@@ -10,8 +10,8 @@ pretrained sentence embeddings and a classic TF-IDF word-overlap baseline.
 ## Data
 - Source: the Kaggle "Wikipedia Movie Plots" dataset (user jrobischon): plot summaries scraped from English Wikipedia, with an origin label per film.
   The licence of the Kaggle compilation was not verified; the text originates from English Wikipedia (CC BY-SA), credit to Wikipedia contributors.
-- Subset used: American, Bollywood, Tamil, Telugu, Malayalam and Kannada films. Plots under 50 words and duplicate title+year rows were removed.
-- Result: 24,076 films from 1901 to 2017 (American 16,362, Bollywood 2,716, Tamil 2,417, Telugu 1,228, Malayalam 978, Kannada 375).
+- Subset used: American, Bollywood, Tamil, Telugu, Malayalam and Kannada films. Plots under 50 words, duplicate title+year rows, and films whose plot text is identical to another film's (dubbed versions or the same film listed in consecutive years) were removed.
+- Result: 23,621 films from 1901 to 2017 (American 16,258, Bollywood 2,686, Tamil 2,333, Telugu 1,040, Malayalam 945, Kannada 359).
 
 ## Method
 - Embeddings: `all-MiniLM-L6-v2` from sentence-transformers, normalised so cosine similarity is a dot product. The model reads only the first 256 tokens of each plot.
@@ -23,9 +23,9 @@ pretrained sentence embeddings and a classic TF-IDF word-overlap baseline.
 | method | pairs | recall@1 | recall@10 | recall@50 | MRR | median_rank |
 |---|---|---|---|---|---|---|
 | embedding | 31 | 0.194 | 0.29 | 0.419 | 0.231 | 84.0 |
-| tfidf | 31 | 0.484 | 0.774 | 0.839 | 0.587 | 2.0 |
+| tfidf | 31 | 0.484 | 0.774 | 0.839 | 0.589 | 2.0 |
 
-On 31 known remake pairs, plain TF-IDF word overlap ranked the original film in the top 10 for 77% of pairs, versus 29% for sentence embeddings (MRR 0.587 vs 0.231; median rank 2 vs 84).
+On 31 known remake pairs, plain TF-IDF word overlap ranked the original film in the top 10 for 77% of pairs, versus 29% for sentence embeddings (MRR 0.589 vs 0.231; median rank 2 vs 84).
 
 Follow-up checks:
 - Removing capitalised words (names, places) did not materially reduce TF-IDF's top-10 recall (77% to 77%), so shared names do not appear to explain its lead. The removal was crude, so this is not proof.
@@ -37,27 +37,27 @@ Ablations (same pairs):
 | method | pairs | recall@10 | recall@50 | MRR | median_rank |
 |---|---|---|---|---|---|
 | embedding | 31 | 0.29 | 0.419 | 0.231 | 84.0 |
-| tfidf | 31 | 0.774 | 0.839 | 0.587 | 2.0 |
+| tfidf | 31 | 0.774 | 0.839 | 0.589 | 2.0 |
 | tfidf_no_names | 31 | 0.774 | 0.806 | 0.634 | 1.0 |
-| hybrid | 31 | 0.774 | 0.839 | 0.583 | 2.0 |
+| hybrid | 31 | 0.774 | 0.839 | 0.584 | 2.0 |
 
 Truncation test:
 
 | method | pairs | recall@10 | recall@50 | MRR | median_rank |
 |---|---|---|---|---|---|
 | embedding | 31 | 0.29 | 0.419 | 0.231 | 84.0 |
-| tfidf_full_plot | 31 | 0.774 | 0.839 | 0.587 | 2.0 |
-| tfidf_first190 | 31 | 0.645 | 0.774 | 0.462 | 3.0 |
+| tfidf_full_plot | 31 | 0.774 | 0.839 | 0.589 | 2.0 |
+| tfidf_first190 | 31 | 0.645 | 0.774 | 0.479 | 3.0 |
 
 Hardest pairs for the embeddings (rank of the original, 1 = best):
 
 | original | remake | rank_embedding | rank_tfidf |
 |---|---|---|---|
-| Unfaithful | Murder | 11338 | 118 |
-| Mrs. Doubtfire | Avvai Shanmughi | 8583 | 2169 |
-| Hitch | Partner | 8382 | 1262 |
-| Reservoir Dogs | Kaante | 8108 | 105 |
-| Gol Maal | Bol Bachchan | 4460 | 1845 |
+| Unfaithful | Murder | 10987 | 114 |
+| Mrs. Doubtfire | Avvai Shanmughi | 8271 | 2111 |
+| Hitch | Partner | 8056 | 1234 |
+| Reservoir Dogs | Kaante | 7836 | 104 |
+| Gol Maal | Bol Bachchan | 4259 | 1792 |
 
 The app lets you try both methods. It defaults to TF-IDF because that method performed best in this test.
 
@@ -71,7 +71,7 @@ The app lets you try both methods. It defaults to TF-IDF because that method per
 ## How to run
 1. Create a virtual environment and install: `pip install pandas numpy scipy scikit-learn matplotlib sentence-transformers streamlit jupyterlab`
 2. Download the Kaggle CSV to `data/wiki_movie_plots_deduped.csv` and run `notebooks/01_explore_and_clean.ipynb` to create `data/clean.csv`.
-3. `python src/embed.py` creates the embeddings.
+3. `python src/embed.py` creates the embeddings, then `python -m src.dedupe_plots` removes identical-plot films from the table and the embeddings.
 4. `python -m src.evaluate`, `python -m src.ablation`, `python -m src.truncation_test` create the files in `results/`.
 5. `python -m src.build_app_data` then `streamlit run app.py` runs the app locally.
 
